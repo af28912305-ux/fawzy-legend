@@ -1,0 +1,2923 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAWZY | أسطورة المنصورة</title>
+
+    <!-- Fonts & Icons -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* ========== RESET & VARIABLES ========== */
+        :root {
+            --primary: #00f2fe;
+            --primary-dark: #00c4d4;
+            --secondary: #9d4edd;
+            --accent: #f72585;
+            --accent-2: #ff9e00;
+            --bg-deep: #03050b;
+            --bg-dark: #0a0f1f;
+            --bg-card: rgba(18, 30, 50, 0.8);
+            --bg-glass: rgba(10, 20, 40, 0.6);
+            --text-bright: #ffffff;
+            --text-light: #f0f4fa;
+            --text-dim: #a0b0c0;
+            --border-glow: rgba(0, 242, 254, 0.3);
+            --shadow-sm: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.7);
+            --shadow-neon: 0 0 30px rgba(0, 242, 254, 0.4);
+            --gradient-primary: linear-gradient(135deg, var(--primary), var(--secondary));
+            --gradient-accent: linear-gradient(135deg, var(--accent), var(--accent-2));
+            --gradient-supreme: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
+            --gradient-gold: linear-gradient(135deg, #ffd700, #ffaa00);
+            --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 100px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-light);
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ========== CUSTOM CURSOR ========== */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s, background 0.2s;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .cursor::after {
+            content: '';
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(1.5);
+            background: rgba(0, 242, 254, 0.1);
+            border-color: var(--accent);
+        }
+
+        /* ========== PROGRESS BAR ========== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--gradient-primary);
+            z-index: 10001;
+            transition: width 0.3s;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* ========== COMPLEX BACKGROUND ========== */
+        #particles-js,
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        #canvas-container {
+            z-index: -2;
+            opacity: 0.5;
+        }
+
+        /* ========== PRELOADER ========== */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-deep);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(0, 242, 254, 0.2);
+            border-top-color: var(--primary);
+            border-right-color: var(--secondary);
+            border-bottom-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 1400px;
+            padding: 15px 40px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-glow);
+            border-radius: 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-md), var(--shadow-neon);
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translate(-50%, -100%);
+            }
+
+            to {
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: var(--gradient-supreme);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            position: relative;
+            letter-spacing: 3px;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-supreme);
+            filter: blur(20px);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 8px 0;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-bright);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+            left: 0;
+            right: auto;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .theme-toggle,
+        .lang-toggle {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            border-radius: 50px;
+            padding: 8px 16px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-size: 0.9rem;
+        }
+
+        .theme-toggle:hover,
+        .lang-toggle:hover {
+            background: var(--primary);
+            color: var(--bg-deep);
+            border-color: var(--primary);
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 700px;
+        }
+
+        .hero-subtitle {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 30px;
+            animation: fadeInRight 1s ease;
+        }
+
+        .hero-title {
+            font-size: 5.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            animation: fadeInRight 1s ease 0.2s both;
+        }
+
+        .hero-title span {
+            background: var(--gradient-supreme);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            display: block;
+        }
+
+        .typed-text-container {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .typed-text {
+            color: var(--primary);
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
+            margin-left: 10px;
+        }
+
+        .hero-description {
+            font-size: 1.4rem;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            animation: fadeInRight 1s ease 0.4s both;
+            border-right: 4px solid var(--accent);
+            padding-right: 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 50px;
+            margin-bottom: 50px;
+            animation: fadeInRight 1s ease 0.6s both;
+        }
+
+        .hero-stat-item {
+            text-align: center;
+        }
+
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+        }
+
+        .hero-stat-label {
+            color: var(--text-dim);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            animation: fadeInRight 1s ease 0.8s both;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+            z-index: 1;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--bg-deep);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: var(--gradient-accent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::before {
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(247, 37, 133, 0.5);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--bg-deep);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
+        }
+
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            animation: fadeInLeft 1s ease 0.4s both;
+        }
+
+        .hero-card {
+            width: 400px;
+            height: 500px;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 30px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: var(--shadow-lg), var(--shadow-neon);
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.5s;
+        }
+
+        .hero-card:hover {
+            transform: perspective(1000px) rotateY(10deg) rotateX(5deg);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: perspective(1000px) rotateY(0deg) translateY(0);
+            }
+
+            50% {
+                transform: perspective(1000px) rotateY(5deg) translateY(-20px);
+            }
+        }
+
+        .hero-card-icon {
+            font-size: 5rem;
+            margin-bottom: 30px;
+            background: var(--gradient-supreme);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-card-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .hero-card-list {
+            list-style: none;
+            text-align: center;
+        }
+
+        .hero-card-list li {
+            margin: 15px 0;
+            color: var(--text-dim);
+        }
+
+        .hero-card-list li i {
+            color: var(--accent);
+            margin-left: 10px;
+        }
+
+        .floating-shape {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: var(--gradient-primary);
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            filter: blur(30px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .shape-1 {
+            top: -50px;
+            right: -50px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .shape-2 {
+            bottom: -50px;
+            left: -50px;
+            background: var(--gradient-accent);
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ========== POETRY SECTION ========== */
+        .poetry-section {
+            padding: 120px 80px;
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.05), rgba(157, 78, 221, 0.05));
+            position: relative;
+            overflow: hidden;
+            border-top: 1px solid var(--border-glow);
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .poetry-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .poetry-title {
+            font-size: 3rem;
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--primary);
+            text-shadow: 0 0 20px var(--primary);
+        }
+
+        .poetry-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .poetry-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 30px;
+            padding: 30px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poetry-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--primary), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 0;
+        }
+
+        .poetry-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .poetry-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .poetry-text {
+            font-size: 1.3rem;
+            line-height: 2.2;
+            color: var(--text-light);
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+        }
+
+        .poetry-decoration {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .poetry-decoration i {
+            color: var(--primary);
+            font-size: 1rem;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .poetry-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .poetry-section {
+                padding: 60px 20px;
+            }
+            
+            .poetry-title {
+                font-size: 2rem;
+            }
+            
+            .poetry-text {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ========== SERVICES SECTION ========== */
+        .section {
+            padding: 120px 80px;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 80px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 8px 20px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        .section-title span {
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 254, 0.1);
+            border-radius: 30px;
+            padding: 40px;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, var(--primary), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s;
+            z-index: 0;
+        }
+
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) perspective(1000px) rotateX(2deg);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-lg), 0 0 30px rgba(0, 242, 254, 0.3);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-description {
+            color: var(--text-dim);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-features li {
+            margin: 10px 0;
+            color: var(--text-dim);
+        }
+
+        .service-features li i {
+            color: var(--accent);
+            margin-left: 10px;
+        }
+
+        .service-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.3s;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .service-link:hover {
+            gap: 15px;
+            color: var(--accent);
+        }
+
+        /* ========== PORTFOLIO SECTION ========== */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid var(--border-glow);
+            border-radius: 50px;
+            color: var(--text-dim);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            font-weight: 600;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--gradient-primary);
+            color: var(--bg-deep);
+            border-color: transparent;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        .portfolio-item:hover {
+            transform: perspective(1000px) rotateY(5deg) rotateX(2deg);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s;
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-item:hover .portfolio-image {
+            transform: scale(1.1);
+        }
+
+        .portfolio-category {
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-title {
+            color: var(--text-bright);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .portfolio-link {
+            color: var(--text-bright);
+            font-size: 1.2rem;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .portfolio-link:hover {
+            transform: rotate(360deg);
+        }
+
+        /* ========== BLOG SECTION ========== */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .blog-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-meta {
+            display: flex;
+            gap: 15px;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .blog-meta i {
+            color: var(--primary);
+            margin-left: 5px;
+        }
+
+        .blog-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--text-bright);
+        }
+
+        .blog-excerpt {
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        .blog-read-more {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .blog-read-more:hover {
+            gap: 15px;
+            color: var(--accent);
+        }
+
+        /* ========== CONTACT SECTION ========== */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 30px;
+            padding: 40px;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .contact-info p {
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        .contact-details {
+            margin-bottom: 30px;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-detail-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .contact-detail-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-detail-text p {
+            margin: 0;
+            color: var(--text-dim);
+        }
+
+        .contact-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .contact-social a {
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .contact-social a:hover {
+            background: var(--gradient-primary);
+            color: var(--bg-deep);
+            transform: translateY(-3px);
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glow);
+            border-radius: 30px;
+            padding: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glow);
+            border-radius: 15px;
+            color: var(--text-light);
+            font-family: 'Cairo', sans-serif;
+            transition: var(--transition-smooth);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 15px;
+            color: var(--bg-deep);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
+        }
+
+        .form-submit.loading {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        .form-submit.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--bg-deep);
+            border-top-color: transparent;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: button-spin 0.8s linear infinite;
+        }
+
+        @keyframes button-spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        /* ========== TOAST MESSAGES ========== */
+        .toast-container {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10001;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--gradient-primary);
+            color: var(--bg-deep);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toast-slide 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        @keyframes toast-slide {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--border-glow);
+            padding: 80px 80px 30px;
+            margin-top: 100px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto 50px;
+        }
+
+        .footer-about h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            background: var(--gradient-primary);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .footer-about p {
+            color: var(--text-dim);
+            margin-bottom: 20px;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
+
+        .footer-social a:hover {
+            background: var(--gradient-primary);
+            color: var(--bg-deep);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-right: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 242, 254, 0.1);
+            color: var(--text-dim);
+        }
+
+        .footer-bottom a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.5s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-glow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close:hover {
+            background: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .modal-body {
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        /* ========== BACK TO TOP ========== */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-deep);
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-smooth);
+            z-index: 999;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.5);
+        }
+
+        /* ========== SCROLL REVEAL ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1200px) {
+            .hero-title {
+                font-size: 4.5rem;
+            }
+
+            .services-grid,
+            .portfolio-grid,
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 150px 20px 50px;
+            }
+
+            .hero-description {
+                border-right: none;
+                padding-right: 0;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            * {
+                cursor: default;
+            }
+
+            .cursor {
+                display: none;
+            }
+
+            .header {
+                flex-direction: column;
+                border-radius: 20px;
+                padding: 15px;
+                width: 98%;
+            }
+
+            .nav-menu {
+                margin: 15px 0;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-card {
+                width: 300px;
+                height: 400px;
+            }
+
+            .services-grid,
+            .portfolio-grid,
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 60px 15px;
+            }
+
+            .typed-text-container {
+                font-size: 1.3rem;
+            }
+
+            .header-actions {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- Particles Container -->
+    <div id="particles-js"></div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            FAWZY
+            <div class="logo-glow"></div>
+        </div>
+
+        <nav class="nav-menu">
+            <a href="#home" class="nav-link active">الرئيسية</a>
+            <a href="#services" class="nav-link">الخدمات</a>
+            <a href="#portfolio" class="nav-link">أعمالي</a>
+            <a href="#blog" class="nav-link">المدونة</a>
+            <a href="#poetry" class="nav-link">شعر</a>
+            <a href="#contact" class="nav-link">تواصل</a>
+        </nav>
+
+        <div class="header-actions">
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="lang-toggle" id="langToggle">
+                EN
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-subtitle">
+                <i class="fas fa-crown" style="margin-left: 10px;"></i>
+                أسطورة المنصورة
+            </div>
+            <h1 class="hero-title">
+                <span>FAWZY</span>
+                <span>THE LION</span>
+            </h1>
+
+            <div class="typed-text-container">
+                أنا <span class="typed-text" id="typedText"></span>
+            </div>
+
+            <p class="hero-description">
+                مبرمج، مصمم، ومؤلف بـ 6 لغات.. أصنع طريقي الخاص في صمت من قلب المنصورة، الدقهلية.
+            </p>
+
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number" data-target="6">0</span>
+                    <span class="hero-stat-label">لغات</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number" data-target="50">0</span>
+                    <span class="hero-stat-label">مشروع</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number" data-target="8">0</span>
+                    <span class="hero-stat-label">سنوات خبرة</span>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">
+                    تواصل معي
+                    <i class="fas fa-arrow-left" style="margin-right: 10px;"></i>
+                </a>
+                <a href="#portfolio" class="btn btn-outline">
+                    شاهد أعمالي
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-card">
+                <i class="fas fa-code hero-card-icon"></i>
+                <h3 class="hero-card-title">Full Stack Developer</h3>
+                <ul class="hero-card-list">
+                    <li><i class="fas fa-check-circle"></i> Python/JavaScript</li>
+                    <li><i class="fas fa-check-circle"></i> PHP/Java</li>
+                    <li><i class="fas fa-check-circle"></i> C++/C#</li>
+                    <li><i class="fas fa-check-circle"></i> Cybersecurity Expert</li>
+                </ul>
+            </div>
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <div class="section-header reveal">
+            <div class="section-tag">ماذا أقدم</div>
+            <h2 class="section-title">خدماتي <span>الأسطورية</span></h2>
+            <p class="section-description">
+                أقدم حلولاً تقنية متكاملة تجمع بين الإبداع والأمان والأداء العالي
+            </p>
+        </div>
+
+        <div class="services-grid">
+            <!-- Service 1 -->
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3 class="service-title">الأمن السيبراني</h3>
+                <p class="service-description">
+                    حماية متطورة للأنظمة واختبارات اختراق عميقة باستخدام أحدث المنهجيات.
+                </p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check"></i> اختبار الاختراق</li>
+                    <li><i class="fas fa-check"></i> تأمين الشبكات</li>
+                    <li><i class="fas fa-check"></i> تحليل الثغرات</li>
+                </ul>
+                <button class="service-link" onclick="showServiceDetails('cybersecurity')">
+                    اكتشف المزيد
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+                <h3 class="service-title">تطوير الويب</h3>
+                <p class="service-description">
+                    بناء تطبيقات ويب تفاعلية بأحدث التقنيات وتجارب مستخدم ساحرة.
+                </p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check"></i> Frontend متقدم</li>
+                    <li><i class="fas fa-check"></i> Backend قوي</li>
+                    <li><i class="fas fa-check"></i> قواعد بيانات</li>
+                </ul>
+                <button class="service-link" onclick="showServiceDetails('webdev')">
+                    اكتشف المزيد
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-card reveal">
+                <div class="service-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3 class="service-title">التصميم الإبداعي</h3>
+                <p class="service-description">
+                    تصميم هويات بصرية وهندسة إبداعية تعبر عن قصة علامتك التجارية.
+                </p>
+                <ul class="service-features">
+                    <li><i class="fas fa-check"></i> UI/UX Design</li>
+                    <li><i class="fas fa-check"></i> Brand Identity</li>
+                    <li><i class="fas fa-check"></i> Motion Graphics</li>
+                </ul>
+                <button class="service-link" onclick="showServiceDetails('design')">
+                    اكتشف المزيد
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="section" id="portfolio">
+        <div class="section-header reveal">
+            <div class="section-tag">أعمالي</div>
+            <h2 class="section-title">مشاريع <span>أسطورية</span></h2>
+            <p class="section-description">
+                مجموعة من أبرز المشاريع التي قمت بتنفيذها بعناية فائقة
+            </p>
+        </div>
+
+        <div class="portfolio-filters reveal">
+            <button class="filter-btn active" data-filter="all">الكل</button>
+            <button class="filter-btn" data-filter="web">تطوير ويب</button>
+            <button class="filter-btn" data-filter="security">أمن سيبراني</button>
+            <button class="filter-btn" data-filter="design">تصميم</button>
+        </div>
+
+        <div class="portfolio-grid">
+            <!-- Portfolio Item 1 -->
+            <div class="portfolio-item" data-category="web" onclick="showProjectDetails('project1')">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&auto=format"
+                    alt="منصة تعليمية" class="portfolio-image">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">تطوير ويب</span>
+                    <h3 class="portfolio-title">منصة تعليمية متكاملة</h3>
+                    <span class="portfolio-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 2 -->
+            <div class="portfolio-item" data-category="security" onclick="showProjectDetails('project2')">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=600&auto=format" alt="نظام أمني"
+                    class="portfolio-image">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">أمن سيبراني</span>
+                    <h3 class="portfolio-title">نظام كشف الاختراقات</h3>
+                    <span class="portfolio-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 3 -->
+            <div class="portfolio-item" data-category="design" onclick="showProjectDetails('project3')">
+                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=600&auto=format"
+                    alt="هوية بصرية" class="portfolio-image">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">تصميم</span>
+                    <h3 class="portfolio-title">هوية بصرية لشركة تك</h3>
+                    <span class="portfolio-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 4 -->
+            <div class="portfolio-item" data-category="web" onclick="showProjectDetails('project4')">
+                <img src="https://images.unsplash.com/photo-1556742031-c6961e8560b0?w=600&auto=format"
+                    alt="متجر إلكتروني" class="portfolio-image">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">تطوير ويب</span>
+                    <h3 class="portfolio-title">متجر إلكتروني فاخر</h3>
+                    <span class="portfolio-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 5 -->
+            <div class="portfolio-item" data-category="security" onclick="showProjectDetails('project5')">
+                <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=600&auto=format" alt="تأمين بنكي"
+                    class="portfolio-image">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">أمن سيبراني</span>
+                    <h3 class="portfolio-title">تأمين بنكي متكامل</h3>
+                    <span class="portfolio-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Portfolio Item 6 -->
+            <div class="portfolio-item" data-category="design" onclick="showProjectDetails('project6')">
+                <img src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&auto=format"
+                    alt="تطبيق جوال" class="portfolio-image">
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">تصميم</span>
+                    <h3 class="portfolio-title">تصميم تطبيق جوال</h3>
+                    <span class="portfolio-link">
+                        <i class="fas fa-arrow-left"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section" id="blog">
+        <div class="section-header reveal">
+            <div class="section-tag">المدونة</div>
+            <h2 class="section-title">آخر <span>المقالات</span></h2>
+            <p class="section-description">
+                أفكار وخبرات ومقالات تقنية من وجهة نظر الأسطورة
+            </p>
+        </div>
+
+        <div class="blog-grid">
+            <!-- Blog Post 1 -->
+            <article class="blog-card">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&auto=format"
+                    alt="الأمن السيبراني" class="blog-image">
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> 15 يناير 2026</span>
+                        <span><i class="fas fa-clock"></i> 5 دقائق</span>
+                    </div>
+                    <h3 class="blog-title">مستقبل الأمن السيبراني في 2026</h3>
+                    <p class="blog-excerpt">
+                        تعرف على أحدث التهديدات وكيفية حماية أنظمتك منها في عصر الذكاء الاصطناعي...
+                    </p>
+                    <button class="blog-read-more" onclick="showBlogPost('post1')">
+                        اقرأ المزيد
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Blog Post 2 -->
+            <article class="blog-card">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format"
+                    alt="تطوير الويب" class="blog-image">
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> 10 يناير 2026</span>
+                        <span><i class="fas fa-clock"></i> 7 دقائق</span>
+                    </div>
+                    <h3 class="blog-title">أفضل ممارسات تطوير الويب 2026</h3>
+                    <p class="blog-excerpt">
+                        دليلك الشامل لكتابة كود نظيف وأداء عالي للمواقع باستخدام أحدث التقنيات...
+                    </p>
+                    <button class="blog-read-more" onclick="showBlogPost('post2')">
+                        اقرأ المزيد
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </article>
+
+            <!-- Blog Post 3 -->
+            <article class="blog-card">
+                <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400&auto=format"
+                    alt="تعلم البرمجة" class="blog-image">
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="fas fa-calendar"></i> 5 يناير 2026</span>
+                        <span><i class="fas fa-clock"></i> 6 دقائق</span>
+                    </div>
+                    <h3 class="blog-title">كيف تتعلم 6 لغات برمجة</h3>
+                    <p class="blog-excerpt">
+                        خطتي الشخصية في تعلم وإتقان لغات البرمجة المختلفة من الصفر حتى الاحتراف...
+                    </p>
+                    <button class="blog-read-more" onclick="showBlogPost('post3')">
+                        اقرأ المزيد
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <!-- Poetry Section (الجوهرة الجديدة) -->
+    <section class="poetry-section" id="poetry">
+        <div class="poetry-container">
+            <h2 class="poetry-title reveal">من نور العلم</h2>
+            
+            <div class="poetry-grid">
+                <!-- بيت 1 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        سَأَلْتُ النَّفْسَ: أَيُّ المَجْدِ بَاقِي؟<br>
+                        فَقَالَتْ: نور علم فِي الآفاق
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 2 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        أَنَا المِقْدَامُ مَا هَانَتْ خُطَايَا<br>
+                        وَإِنْ حُمِيَ الوَطِيسُ، فَذَا نِطَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 3 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        بَنَيْتُ مِنَ الكِفَاحِ مَقَامَ عِزٍّ<br>
+                        وَعِزَّةُ نَفْسِيَ الأَبِيَّةُ، وَثَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 4 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَإِنْ بَكَتِ "الخُنَاسُ" لِفَقْدِ صَخْرٍ<br>
+                        فَإِنِّي لِلْعُلَا، صَعْبُ الفِرَاقِ
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 5 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَأَسْرِي فِي طَرِيقِ المَجْدِ فَرْداً<br>
+                        كَمَا يَسْرِي الضِّيَاءُ بِاخْتِرَاقِ
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 6 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        سَأَلْتُ الرَّكْبَ وَالأَيَّامَ عَنِّي<br>
+                        أَيُهْزَمُ مَنْ سعي حر المساق؟
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 7 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَأَرْنُــو لِلْمُــرَادِ العَبْلِ دَوْماً<br>
+                        بسعيي وَأَبْلُــغُ كُلَّ رَاقِ
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 8 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَآيَاتُ الكِتَابِ لَنَا رِبَاطٌ<br>
+                        وَفِي غَامِضِ "العُلُومِ" لِيَ انْتِطَاقُ
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 9 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        فَلا السَّمَاءُ بِطُولِ الجَهْلِ تَرْفَعُكُمْ<br>
+                        وَلا حَبِيبٌ بِخُبْثِ الفِعْلِ يَنْسَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 10 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        أَنَا الفَذُّ الَّذِي رَادَ المَعَالِي<br>
+                        وَصَاغَ مِنَ الضَّنَى نُورَ التَّرَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 11 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        عِصَامِيُّ الخُطَى مَا زِلْتُ أَعْلُو<br>
+                        وَلَمْ أَقْبَلْ هَوَاناً فِي مَذَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 12 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        سموت عن الوشاة و كل لغو<br>
+                        و صدق عزيمتي كان انعتاقي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 13 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        إِذَا نَطَقَ "الأَبِيُّ" فَخْراً صَدَقْنَا<br>
+                        فَفِي صِدْقِ الفَتَى كُلُّ المَسَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 14 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَإِذَا البَغِيُّ تَمَادَى فِي سَفَاهَتِهِ<br>
+                        لَزِمْتُ صَمْتِيَ إِجْلالاً لأَعْرَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 15 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        فَلا تَحْسَبِي أَنَّ السُّكُوتَ مَذَلَّةٌ<br>
+                        فَصَمْتِي عِقَابٌ لِلرَّدِيءِ الشَّاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 16 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَمَا غَرَّنِي كُحْلُ المِلَاحِ وَحُسْنُهُمْ<br>
+                        فَعِزَّةُ نَفْسِي لِلْمَعَالِي طِبَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 17 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        فَشَتَّانَ بَيْنَ الزَّهْرِ يَنْدَى عَبِيرُهُ<br>
+                        وَبَيْنَ غُثَاءٍ مَجَّهُ أَذْوَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 18 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَمَا كُلُّ ذِي طُهْرٍ يَصُونُ لِسَانَهُ<br>
+                        فَبَعْضُ النَّقَا فِي المَظْهَرِ الخَدَّاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 19 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَمَا كُلُّ الصِّحَابِ لَنَا صِحَابٌ<br>
+                        فَإِنَّ المَاءَ يَصْفُو بِالرَّوَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 20 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَفَـــائِي لِلْكِرَامِ شِعَارُ دَرْبِي<br>
+                        وَمَا طَبْعُ اللَّئِيمِ لِيَ بِبَـــاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 21 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        وَمَنْ يَفْعَلِ المَعْرُوفَ لَا يَعْدَمْ ثَوَاباً<br>
+                        كَمَا قَالَ "الزُّهَيْرُ" بِاتِّفَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 22 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        أَنَا الحُرُّ الَّذِي مَلَكَ المَبَادِئَ<br>
+                        وَإِنْ جَارَ الزَّمَانُ، فَصَبْرِي بَاقِي
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- بيت 23 -->
+                <div class="poetry-card reveal">
+                    <div class="poetry-text">
+                        صَلَاةُ اللهِ تَغْشَى خَيْرَ هَادٍ<br>
+                        نَبِيِّ الحَقِّ، مَحْمُودِ الخَلَاقِ
+                    </div>
+                    <div class="poetry-decoration">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section" id="contact">
+        <div class="section-header reveal">
+            <div class="section-tag">تواصل معي</div>
+            <h2 class="section-title">لنصنع <span>المستحيل</span> معاً</h2>
+            <p class="section-description">
+                أنا هنا لمساعدتك في تحويل أفكارك إلى واقع ملموس
+            </p>
+        </div>
+
+        <div class="contact-container">
+            <!-- Contact Info -->
+            <div class="contact-info reveal">
+                <h3>معلومات التواصل</h3>
+                <p>من المنصورة، الدقهلية إلى العالم - أنا على بعد رسالة منك!</p>
+
+                <div class="contact-details">
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-detail-text">
+                            <h4>الموقع</h4>
+                            <p>المنصورة، الدقهلية، مصر</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-detail-text">
+                            <h4>رقم الهاتف</h4>
+                            <p dir="ltr">01003380762</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-detail-item">
+                        <div class="contact-detail-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-detail-text">
+                            <h4>البريد الإلكتروني</h4>
+                            <p>af28912305@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-social">
+                    <a href="https://www.facebook.com/ahmed.fawzy.385922" target="_blank"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/fawzy.legend/" target="_blank"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/YOUR_USERNAME" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/YOUR_USERNAME" target="_blank"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form reveal">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="name" placeholder="الاسم الكامل" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="email" placeholder="البريد الإلكتروني" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="subject" placeholder="الموضوع">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="message" placeholder="رسالتك..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-submit" id="submitBtn">
+                        أرسل الرسالة
+                        <i class="fas fa-paper-plane" style="margin-right: 10px;"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <!-- About -->
+            <div class="footer-about">
+                <h3>FAWZY</h3>
+                <p>أسطورة التقنية من المنصورة. أصنع المستحيل وأحول الأفكار إلى واقع رقمي مبهر بأمان وإبداع.</p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/ahmed.fawzy.385922" target="_blank"><i
+                            class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/fawzy.legend/" target="_blank"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/YOUR_USERNAME" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/YOUR_USERNAME" target="_blank"><i
+                            class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-links">
+                <h4>روابط سريعة</h4>
+                <ul>
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#services">الخدمات</a></li>
+                    <li><a href="#portfolio">أعمالي</a></li>
+                    <li><a href="#blog">المدونة</a></li>
+                    <li><a href="#poetry">شعر</a></li>
+                    <li><a href="#contact">تواصل</a></li>
+                </ul>
+            </div>
+
+            <!-- Services Links -->
+            <div class="footer-links">
+                <h4>الخدمات</h4>
+                <ul>
+                    <li><a href="#" onclick="showServiceDetails('cybersecurity'); return false;">الأمن السيبراني</a>
+                    </li>
+                    <li><a href="#" onclick="showServiceDetails('webdev'); return false;">تطوير الويب</a></li>
+                    <li><a href="#" onclick="showServiceDetails('design'); return false;">التصميم الإبداعي</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="footer-links">
+                <h4>معلومات التواصل</h4>
+                <ul>
+                    <li><i class="fas fa-phone" style="margin-left: 10px;"></i> 01003380762</li>
+                    <li><i class="fas fa-envelope" style="margin-left: 10px;"></i> af28912305@gmail.com</li>
+                    <li><i class="fas fa-map-marker" style="margin-left: 10px;"></i> المنصورة، مصر</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 FAWZY | أسطورة المنصورة. جميع الحقوق محفوظة. صُنع في صمت ⚔️</p>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- Modal for Details -->
+    <div class="modal" id="detailsModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </div>
+            <h2 class="modal-title" id="modalTitle"></h2>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ========== EMAILJS CONFIGURATION ==========
+        (function () {
+            emailjs.init("ZBwJrIdXEctL9TQ0Q"); // Public Key
+        })();
+
+        // ========== CUSTOM CURSOR ==========
+        const cursor = document.getElementById('cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .service-card, .portfolio-item, .btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // ========== PROGRESS BAR ==========
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+
+        // ========== PARTICLES.JS ==========
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80 },
+                color: { value: '#00f2fe' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.3 },
+                size: { value: 2 },
+                line_linked: {
+                    enable: true,
+                    color: '#9d4edd',
+                    opacity: 0.2
+                }
+            }
+        });
+
+        // ========== 3D INTERACTIVE SPHERE (أهدى) ==========
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0);
+        container.appendChild(renderer.domElement);
+
+        // Create a glowing sphere - أهدى وأخف
+        const geometry = new THREE.IcosahedronGeometry(1.5, 2);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0x00f2fe,
+            emissive: 0x00f2fe,
+            shininess: 20,
+            transparent: true,
+            opacity: 0.15,
+            wireframe: true
+        });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        // Add lights - أخف
+        const light1 = new THREE.PointLight(0x00f2fe, 0.5, 10);
+        light1.position.set(2, 3, 4);
+        scene.add(light1);
+
+        const light2 = new THREE.PointLight(0x9d4edd, 0.5, 10);
+        light2.position.set(-3, -1, 2);
+        scene.add(light2);
+
+        camera.position.z = 6;
+
+        // Mouse interaction - أبطأ
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // Animation - أبطأ
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate sphere based on mouse position - أبطأ
+            sphere.rotation.y += 0.001;
+            sphere.rotation.x += 0.0005;
+            
+            // Move sphere slightly with mouse - أقل حركة
+            sphere.position.x += (mouseX * 1.5 - sphere.position.x) * 0.01;
+            sphere.position.y += (mouseY * 1.5 - sphere.position.y) * 0.01;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // ========== TYPING EFFECT (أبطأ) ==========
+        const typedText = document.getElementById('typedText');
+        const phrases = [
+            'أسطورة المنصورة',
+            'خبير أمن سيبراني',
+            'مصمم إبداعي',
+            'متحدث بـ 6 لغات',
+            'صقر الدقهلية'
+        ];
+
+        let i = 0;
+        let j = 0;
+        let currentPhrase = [];
+        let isDeleting = false;
+
+        function typeEffect() {
+            if (i < phrases.length) {
+                if (!isDeleting && j <= phrases[i].length) {
+                    currentPhrase = phrases[i].slice(0, j);
+                    j++;
+                }
+
+                if (isDeleting && j <= phrases[i].length) {
+                    currentPhrase = phrases[i].slice(0, j - 1);
+                    j--;
+                }
+
+                if (j == phrases[i].length) {
+                    isDeleting = true;
+                }
+
+                if (isDeleting && j === 0) {
+                    currentPhrase = [];
+                    isDeleting = false;
+                    i++;
+                    if (i == phrases.length) i = 0;
+                }
+
+                typedText.textContent = currentPhrase;
+            }
+            // أبطأ من الأول
+            setTimeout(typeEffect, isDeleting ? 150 : 200);
+        }
+
+        typeEffect();
+
+        // ========== ANIMATED NUMBERS ==========
+        function animateNumbers() {
+            const stats = document.querySelectorAll('.hero-stat-number');
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                let current = 0;
+                const increment = target / 50;
+
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target + (target === 50 ? '+' : '');
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current);
+                    }
+                }, 30);
+            });
+        }
+
+        // ========== SCROLL REVEAL ==========
+        function reveal() {
+            const reveals = document.querySelectorAll('.reveal');
+
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', reveal);
+        reveal();
+
+        // ========== TOAST FUNCTION ==========
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // ========== FORM SUBMIT ==========
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+
+            // Loading state
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = 'جاري الإرسال...';
+
+            const templateParams = {
+                from_name: document.getElementById('name').value,
+                from_email: document.getElementById('email').value,
+                subject: document.getElementById('subject').value || 'رسالة جديدة من الموقع',
+                message: document.getElementById('message').value,
+                to_email: 'af28912305@gmail.com'
+            };
+
+            emailjs.send('service_8wmw7tw', 'template_uvgq9ps', templateParams)
+                .then(function (response) {
+                    showToast('✅ تم إرسال الرسالة! هرد عليك قريباً', 'success');
+                    document.getElementById('contactForm').reset();
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                    showToast('❌ حصل خطأ. كلمني على الإيميل مباشرة', 'error');
+                })
+                .finally(function () {
+                    submitBtn.classList.remove('loading');
+                    submitBtn.innerHTML = originalText;
+                });
+        });
+
+        // ========== ACTIVE NAV LINK ==========
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', function () {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+
+            // Back to Top
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 500) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+
+            // Trigger number animation when hero is visible
+            const heroStats = document.querySelector('.hero-stats');
+            if (heroStats && heroStats.getBoundingClientRect().top < window.innerHeight) {
+                const stats = document.querySelectorAll('.hero-stat-number');
+                let shouldAnimate = false;
+                stats.forEach(stat => {
+                    if (stat.textContent === '0') shouldAnimate = true;
+                });
+                if (shouldAnimate) animateNumbers();
+            }
+        });
+
+        // ========== THEME TOGGLE ==========
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', function () {
+            document.body.classList.toggle('light-theme');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-theme')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+
+        // ========== PORTFOLIO FILTER ==========
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                filterBtns.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                const filterValue = this.getAttribute('data-filter');
+
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // ========== MODAL FUNCTIONS ==========
+        const modal = document.getElementById('detailsModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalBody = document.getElementById('modalBody');
+
+        function showModal(title, content) {
+            modalTitle.textContent = title;
+            modalBody.innerHTML = content;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
+        // Service Details
+        function showServiceDetails(service) {
+            let title, content;
+
+            if (service === 'cybersecurity') {
+                title = 'الأمن السيبراني';
+                content = `
+                    <p>أقدم خدمات أمن سيبراني متكاملة تشمل:</p>
+                    <ul style="margin-right: 20px; margin-top: 15px;">
+                        <li>🔹 اختبار الاختراق المتقدم للشبكات والتطبيقات</li>
+                        <li>🔹 تحليل الثغرات الأمنية وتقديم حلول عملية</li>
+                        <li>🔹 تأمين البنية التحتية للشركات</li>
+                        <li>🔹 التدقيق الأمني لأنظمة المعلومات</li>
+                        <li>🔹 الاستجابة للحوادث الأمنية</li>
+                    </ul>
+                    <p style="margin-top: 20px;">مع 8 سنوات خبرة في المجال، أضمن لك أعلى مستويات الحماية لأنظمتك.</p>
+                `;
+            } else if (service === 'webdev') {
+                title = 'تطوير الويب';
+                content = `
+                    <p>خدمات تطوير الويب التي أقدمها:</p>
+                    <ul style="margin-right: 20px; margin-top: 15px;">
+                        <li>🔹 تطوير مواقع وتطبيقات ويب متكاملة</li>
+                        <li>🔹 بناء متاجر إلكترونية احترافية</li>
+                        <li>🔹 أنظمة إدارة محتوى مخصصة</li>
+                        <li>🔹 واجهات مستخدم تفاعلية بأحدث التقنيات</li>
+                        <li>🔹 تحسين أداء المواقع ومحركات البحث</li>
+                    </ul>
+                    <p style="margin-top: 20px;">أستخدم أحدث التقنيات مثل React, Node.js, Python لضمان أفضل أداء.</p>
+                `;
+            } else if (service === 'design') {
+                title = 'التصميم الإبداعي';
+                content = `
+                    <p>خدمات التصميم الإبداعي:</p>
+                    <ul style="margin-right: 20px; margin-top: 15px;">
+                        <li>🔹 تصميم هويات بصرية متكاملة للشركات</li>
+                        <li>🔹 تصميم واجهات المستخدم لتطبيقات الويب والجوال</li>
+                        <li>🔹 تصميم مواد تسويقية وإعلانية</li>
+                        <li>🔹 تصميم شعارات احترافية</li>
+                        <li>🔹 تصميم تجارب مستخدم مبتكرة</li>
+                    </ul>
+                    <p style="margin-top: 20px;">أجمع بين الإبداع والوظيفية لإنشاء تصاميم تترك انطباعاً قوياً.</p>
+                `;
+            }
+
+            showModal(title, content);
+        }
+
+        // Project Details
+        function showProjectDetails(project) {
+            let title, content;
+            
+            if (project === 'project1') {
+                title = 'منصة تعليمية متكاملة';
+                content = `
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&auto=format" style="width: 100%; border-radius: 15px; margin-bottom: 20px;">
+                    <p>منصة تعليمية متكاملة تقدم:</p>
+                    <ul style="margin-right: 20px;">
+                        <li>✅ نظام إدارة محتوى متقدم</li>
+                        <li>✅ فيديوهات تفاعلية واختبارات</li>
+                        <li>✅ شهادات إتمام إلكترونية</li>
+                        <li>✅ نظام متابعة للطلاب</li>
+                        <li>✅ منتديات نقاش مدمجة</li>
+                    </ul>
+                `;
+            } else if (project === 'project2') {
+                title = 'نظام كشف الاختراقات';
+                content = `
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&auto=format" style="width: 100%; border-radius: 15px; margin-bottom: 20px;">
+                    <p>نظام متقدم لكشف الاختراقات يتميز بـ:</p>
+                    <ul style="margin-right: 20px;">
+                        <li>✅ كشف فوري للهجمات</li>
+                        <li>✅ تحليل سلوكي للمستخدمين</li>
+                        <li>✅ تنبيهات فورية عبر البريد والجوال</li>
+                        <li>✅ تقارير أمنية شاملة</li>
+                        <li>✅ قاعدة بيانات محدثة للتهديدات</li>
+                    </ul>
+                `;
+            } else if (project === 'project3') {
+                title = 'هوية بصرية لشركة تك';
+                content = `
+                    <img src="https://images.unsplash.com/photo-1586717791821-3f44a563fa4c?w=400&auto=format" style="width: 100%; border-radius: 15px; margin-bottom: 20px;">
+                    <p>هوية بصرية متكاملة تضمنت:</p>
+                    <ul style="margin-right: 20px;">
+                        <li>✅ تصميم شعار احترافي</li>
+                        <li>✅ بطاقات عمل وقرطاسية</li>
+                        <li>✅ دليل الهوية البصرية</li>
+                        <li>✅ تصميم مواد تسويقية</li>
+                        <li>✅ هوية رقمية للموقع والتواصل</li>
+                    </ul>
+                `;
+            } else {
+                title = 'مشروع أسطوري';
+                content = '<p>تفاصيل المشروع قريباً...</p>';
+            }
+            
+            showModal(title, content);
+        }
+
+        // Blog Post Details
+        function showBlogPost(post) {
+            let title, content;
+            
+            if (post === 'post1') {
+                title = 'مستقبل الأمن السيبراني في 2026';
+                content = `
+                    <p>في عام 2026، يشهد الأمن السيبراني تطورات متسارعة بفضل الذكاء الاصطناعي والتعلم الآلي. إليك أبرز التوجهات:</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">1. هجمات مدعومة بالذكاء الاصطناعي</h3>
+                    <p>المهاجمون بدأوا يستخدمون الذكاء الاصطناعي لتطوير هجمات أكثر ذكاءً وتخصيصاً.</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">2. الدفاع الاستباقي</h3>
+                    <p>أنظمة الدفاع أصبحت تعتمد على التحليل التنبؤي للهجمات قبل وقوعها.</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">3. أمن إنترنت الأشياء</h3>
+                    <p>مع انتشار الأجهزة المتصلة، زاد التركيز على تأمين هذه الأجهزة.</p>
+                    <p style="margin-top: 20px;">كخبير في المجال، أنصح دائماً بتحديث الأنظمة باستمرار وتدريب الموظفين على الوعي الأمني.</p>
+                `;
+            } else if (post === 'post2') {
+                title = 'أفضل ممارسات تطوير الويب 2026';
+                content = `
+                    <p>أهم الممارسات التي يجب اتباعها في 2026:</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">1. الأداء أولاً</h3>
+                    <p>استخدم تقنيات مثل Lazy Loading وCode Splitting لتحسين سرعة الموقع.</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">2. الأمن المتكامل</h3>
+                    <p>طبق ممارسات الأمن من التصميم الأولي، واستخدم HTTPS و CSP.</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">3. تجربة المستخدم</h3>
+                    <p>صمم للمستخدم أولاً، مع مراعاة إمكانية الوصول وسهولة الاستخدام.</p>
+                `;
+            } else if (post === 'post3') {
+                title = 'كيف تتعلم 6 لغات برمجة';
+                content = `
+                    <p>خطتي الشخصية لتعلم لغات البرمجة:</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">المرحلة الأولى: الأساسيات</h3>
+                    <p>ابدأ بلغة واحدة (يفضل Python أو JavaScript) وأتقن الأساسيات.</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">المرحلة الثانية: التوسع</h3>
+                    <p>بعد إتقان الأساسيات، تعلم لغة ثانية في مجال مختلف (مثل Java للتطبيقات).</p>
+                    <h3 style="color: var(--primary); margin: 20px 0;">المرحلة الثالثة: التخصص</h3>
+                    <p>تعلم لغات حسب المجال الذي تريد التخصص فيه (C++ للألعاب، PHP للويب، إلخ).</p>
+                    <p style="margin-top: 20px;">الأهم هو الممارسة المستمرة وبناء مشاريع حقيقية.</p>
+                `;
+            }
+            
+            showModal(title, content);
+        }
+
+        // ========== PRELOADER ==========
+        window.addEventListener('load', function () {
+            setTimeout(function () {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 1000);
+        });
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                
+                // لو الضغط على back to top (# لوحدها)
+                if (href === '#') {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    return;
+                }
+                
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // ========== ESCAPE MODAL ==========
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && modal.classList.contains('show')) {
+                closeModal();
+            }
+        });
+    </script>
+
+    <!-- Light Theme Styles -->
+    <style>
+        .light-theme {
+            --bg-deep: #f0f4fa;
+            --bg-dark: #e0e8f0;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --bg-glass: rgba(255, 255, 255, 0.6);
+            --text-bright: #0a0f1f;
+            --text-light: #1e293b;
+            --text-dim: #334155;
+            --border-glow: rgba(0, 242, 254, 0.5);
+        }
+
+        .light-theme .hero-card,
+        .light-theme .service-card,
+        .light-theme .portfolio-item,
+        .light-theme .blog-card,
+        .light-theme .contact-info,
+        .light-theme .contact-form {
+            background: var(--bg-card);
+        }
+
+        .light-theme .form-control {
+            background: rgba(0, 0, 0, 0.02);
+            color: var(--text-light);
+        }
+
+        .light-theme .nav-link {
+            color: var(--text-dim);
+        }
+
+        .light-theme .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .light-theme .hero-description {
+            color: var(--text-dim);
+        }
+    </style>
+</body>
+
+</html>
